@@ -1,0 +1,3 @@
+# Android Studio tự tạo sdk.dir trong local.properties của máy bạn.
+# Chép dòng sau vào local.properties và điền token thầy cấp.
+MOCK_API_TOKEN=DIEN_TOKEN_THAY_CAP

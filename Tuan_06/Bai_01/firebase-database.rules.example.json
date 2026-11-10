@@ -1,0 +1,36 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid",
+        "tasksInitialized": { ".validate": "newData.isBoolean()" },
+        "tasks": {
+          ".indexOn": ["scheduledDay"],
+          "$taskId": {
+            ".validate": "newData.hasChildren(['id', 'title', 'category', 'time', 'scheduledDay', 'completed'])",
+            "id": { ".validate": "newData.isString() && newData.val() === $taskId" },
+            "title": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 200" },
+            "category": { ".validate": "newData.val() === 'STUDY' || newData.val() === 'LIFE'" },
+            "time": { ".validate": "newData.isString() && newData.val().matches(/^([01][0-9]|2[0-3]):[0-5][0-9]$/)" },
+            "scheduledDay": { ".validate": "newData.isString() && newData.val().matches(/^[0-9]{8}$/)" },
+            "completed": { ".validate": "newData.isBoolean()" },
+            "completedDay": { ".validate": "newData.isString() && newData.val().matches(/^[0-9]{8}$/)" },
+            "note": { ".validate": "newData.isString() && newData.val().length <= 5000" },
+            "priority": { ".validate": "newData.val() === 'low' || newData.val() === 'medium' || newData.val() === 'high'" },
+            "remind": { ".validate": "newData.isBoolean()" },
+            "subtasks": {
+              "$index": {
+                ".validate": "newData.hasChildren(['title', 'done'])",
+                "title": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 200" },
+                "done": { ".validate": "newData.isBoolean()" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
